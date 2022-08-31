@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "template"
+version = "0.1.0"
+description = ""
+authors = ["gen740 <genfujimoto@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.scripts]
+tinit = 'template.tinit:run'
+
+[tool.poetry.dependencies]
+python = "^3.10"
+toml = "^0.10.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
