@@ -21,6 +21,7 @@ def edit(name: str):
     else:
         print("There in no match template: ", name)
         sys.exit(1)
+    # Confirm Prompt
     print("will edit ", files)
     yn = input("Y/n: ")
     if yn in ["Y", "y", "yes", "Yes", "YES"]:
@@ -32,9 +33,14 @@ def edit(name: str):
 def tinit(name: str):
     global config
     for i in config["template"]:
+        i: Dict[str, Any]
         if i["name"] == name:
-            for j in i["files"]:
-                shutil.copy(os.path.join(config["TemplatePath"], j), ".")
+            if i.get("to") != None:
+                for j, k in zip(i["files"], i["to"]):
+                    shutil.copy(os.path.join(config["TemplatePath"], j), k)
+            else:
+                for j in i["files"]:
+                    shutil.copy(os.path.join(config["TemplatePath"], j), ".")
             break
     else:
         print("There in no match template: ", name)
@@ -57,10 +63,8 @@ def run():
         print("Command:")
         for i in config["template"]:
             description = ""
-            try:
+            if i.get("description") != None:
                 description = i["description"]
-            except Exception as _:
-                pass
             print("\t--", i["name"], "\t", description)
         sys.exit(0)
     if arg1 == "--edit" or arg1 == "-e":
