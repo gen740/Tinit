@@ -1,0 +1,17 @@
+#compdef tinit
+
+_tinit() {
+    _arguments \
+        '(- *)'{-h,--help}'[show help]' \
+        {-e,--edit}'[Edit template]' \
+        {-c,--configure}'[Egit config file]' \
+        '*: :__tinit_modes' \
+        '(--edit *): :__tinit_modes' \
+}
+
+__tinit_modes() {
+    _comp_values=("${(@f)$(tinit comp)}") 
+    _values \
+        'mode' \
+        $_comp_values
+}

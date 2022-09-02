@@ -24,7 +24,7 @@ def edit(name: str):
     # Confirm Prompt
     print("will edit ", files)
     yn = input("Y/n: ")
-    if yn in ["Y", "y", "yes", "Yes", "YES"]:
+    if yn in ["Y", "y", "yes", "Yes", "YES", ""]:
         os.system("nvim " + files)
     else:
         sys.exit(0)
@@ -60,14 +60,16 @@ def run():
     if len(sys.argv) > 1:
         arg1 = sys.argv[1]
     if arg1 == "--help" or arg1 == "-h" or arg1 == "":
-        print("Command:")
+        print("USAGE")
+        print("\ttinit [template]")
+        print("OPTIONS")
+        print("\t-h, --help\tprint help")
         for i in config["template"]:
             description = ""
             if i.get("description") != None:
                 description = i["description"]
-            print("\t--", i["name"], "\t", description)
-        sys.exit(0)
-    if arg1 == "--edit" or arg1 == "-e":
+            print("\t--" + i["name"], "\t", description)
+    elif arg1 == "--edit" or arg1 == "-e":
         arg2 = ""
         try:
             arg2 = sys.argv[2]
@@ -76,7 +78,15 @@ def run():
             print("\t --edit [templatename]")
             sys.exit(0)
         edit(arg2)
-
+    elif arg1 in ["--configure", "-c"]:
+        os.system("nvim " + config_path + "/template/config.toml")
+    elif arg1 in ["--path", "-p"]:
+        print(config["TemplatePath"])
+    elif arg1 == "comp":
+        for i in config["template"]:
+            if not i.get("description") in [None, ""]:
+                print(i["name"] + "[" + i["description"] + "]")
+            else:
+                print(i["name"])
     else:
         tinit(arg1)
-    print("==================== Tinit Done ====================")
