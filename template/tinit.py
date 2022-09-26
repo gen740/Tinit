@@ -41,6 +41,15 @@ def tinit(name: str):
             else:
                 for j in i["files"]:
                     shutil.copy(os.path.join(config["TemplatePath"], j), ".")
+            if i.get("extra_commands") != None:
+                if type(i["extra_commands"]) == list:
+                    for j in i["extra_commands"]:
+                        os.system(j)
+                elif type(i["extra_commands"]) == str:
+                    os.system(i["extra_commands"])
+                else:
+                    print("extra_commands should be string or list")
+            print("==================== Done ====================")
             break
     else:
         print("There in no match template: ", name)
