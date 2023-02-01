@@ -1,7 +1,9 @@
 import os
-import sys
 import shutil
+import sys
+from pathlib import Path
 from typing import Any, Dict
+
 import toml
 
 config: Dict[str, Any]
@@ -35,13 +37,21 @@ def tinit(name: str):
     for i in config["template"]:
         i: Dict[str, Any]
         if i["name"] == name:
-            if i.get("to") != None:
+            if i.get("to") is not None:
                 for j, k in zip(i["files"], i["to"]):
+                    if (parent := Path(k).parent) != Path("."):
+                        try:
+                            os.mkdir(
+                                str(parent),
+                            )
+                        except FileExistsError as e:
+                            print(e)
+                            print("Skipping...")
                     shutil.copy(os.path.join(config["TemplatePath"], j), k)
             else:
                 for j in i["files"]:
                     shutil.copy(os.path.join(config["TemplatePath"], j), ".")
-            if i.get("extra_commands") != None:
+            if i.get("extra_commands") is not None:
                 if type(i["extra_commands"]) == list:
                     for j in i["extra_commands"]:
                         os.system(j)
@@ -75,7 +85,7 @@ def run():
         print("\t-h, --help\tprint help")
         for i in config["template"]:
             description = ""
-            if i.get("description") != None:
+            if i.get("description") is not None:
                 description = i["description"]
             print("\t--" + i["name"], "\t", description)
     elif arg1 == "--edit" or arg1 == "-e":

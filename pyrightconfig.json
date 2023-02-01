@@ -1,16 +1,12 @@
 {
     "include": [
-        "src"
+        "template"
     ],
     "exclude": [
         "**/node_modules",
         "**/__pycache__",
-        "src/experimental",
-        "src/typestubs"
     ],
-    "ignore": [
-        "src/oldstuff"
-    ],
+    "ignore": [],
     "defineConstant": {
         "DEBUG": true
     },
